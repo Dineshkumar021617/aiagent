@@ -8,9 +8,7 @@ To find the PEAS description for the given AI problem and develop an AI agent.
 Explain the problem statement
 
 ## PEAS DESCRIPTION
-Agent type	Performance measure	Environment	Actuators	Sensors
-Vacuum Cleaner	Cleaniness,Number of movements	Rooms	Wheels,Suction tool	Location,Cleanliness
-![image](https://user-images.githubusercontent.com/75234807/162260526-8d1849eb-ca65-4388-b945-ae6d493ce15d.png)
+![image](https://user-images.githubusercontent.com/75234807/162261106-392f654f-f6a7-4c9f-bbe4-1c87ed0efdee.png)
 
 
 ## DESIGN STEPS
@@ -279,8 +277,7 @@ if __name__ == "__main__":
     print('\033[1m' + 'Agent Performance\n' + '\033[0m',agent.performance)
 
 ## OUTPUT
-![Screenshot (5)](https://user-images.githubusercontent.com/75234807/162259913-68bb8a1e-d8b1-4f8d-a7fe-c8ba5f3d44be.png)
-
+![Screenshot (5)](https://user-images.githubusercontent.com/75234807/162261358-be0b7f19-123b-45a1-8301-782f9e5a9935.png)
 
 ## RESULT
 Thus, an AI agent was developed and PEAS description is given.
