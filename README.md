@@ -8,6 +8,9 @@ To find the PEAS description for the given AI problem and develop an AI agent.
 Explain the problem statement
 
 ## PEAS DESCRIPTION
+Agent type	Performance measure	Environment	Actuators	Sensors
+Vacuum Cleaner	Cleaniness,Number of movements	Rooms	Wheels,Suction tool	Location,Cleanliness
+![image](https://user-images.githubusercontent.com/75234807/162260526-8d1849eb-ca65-4388-b945-ae6d493ce15d.png)
 
 
 ## DESIGN STEPS
@@ -65,34 +68,45 @@ def TableDrivenAgentProgram(table):
     To customize it, provide as table a dictionary of all
     {percept_sequence:action} pairs.
     """
-    percepts = []
-
+    percepts=[]
     def program(percept):
-        action =None
-        """
-        Write your code here
-        """
+        percepts.append(percept)
+        action =table.get(tuple(percept))
         return action
 
     return program
 
-loc_A, loc_B = (0, 0), (1, 0)  # The two locations for the Vacuum world
+loc_A, loc_B, loc_C, loc_D, loc_E, loc_F, loc_G, loc_H, loc_I, loc_J, loc_K, loc_L = (0,0),(1,0),(2,0),(2,1),(1,1),(1,2),(2,2),(2,3),(1,3),(0,3),(0,2),(0,1)  # The two locations for the Vacuum world
 
 
 def TableDrivenVacuumAgent():
     """
     Tabular approach towards vacuum world
     """
-    table = {((loc_A, 'Clean'),): 'Right',
-             ((loc_A, 'Dirty'),): 'Suck',
-             ((loc_B, 'Clean'),): 'Left',
-             ((loc_B, 'Dirty'),): 'Suck',
-             ((loc_A, 'Dirty'), (loc_A, 'Clean')): 'Right',
-             ((loc_A, 'Clean'), (loc_B, 'Dirty')): 'Suck',
-             ((loc_B, 'Clean'), (loc_A, 'Dirty')): 'Suck',
-             ((loc_B, 'Dirty'), (loc_B, 'Clean')): 'Left',
-             ((loc_A, 'Dirty'), (loc_A, 'Clean'), (loc_B, 'Dirty')): 'Suck',
-             ((loc_B, 'Dirty'), (loc_B, 'Clean'), (loc_A, 'Dirty')): 'Suck'}
+    table = {(loc_A, 'Clean'): 'Right',
+             (loc_A, 'Dirty'): 'Suck',
+             (loc_B, 'Clean'): 'Right',
+             (loc_B, 'Dirty'): 'Suck',
+             (loc_C, 'Clean'): 'Up',
+             (loc_C, 'Dirty'): 'Suck',
+             (loc_D, 'Clean'): 'Left',
+             (loc_D, 'Dirty'): 'Suck',
+             (loc_E, 'Clean'): 'Up',
+             (loc_E, 'Dirty'): 'Suck',
+             (loc_F, 'Clean'): 'Right',
+             (loc_F, 'Dirty'): 'Suck',
+             (loc_G, 'Clean'): 'Up',
+             (loc_G, 'Dirty'): 'Suck',
+             (loc_H, 'Clean'): 'Left',
+             (loc_H, 'Dirty'): 'Suck',
+             (loc_I, 'Clean'): 'Left',
+             (loc_I, 'Dirty'): 'Suck',
+             (loc_J, 'Clean'): 'Down',
+             (loc_J, 'Dirty'): 'Suck',
+             (loc_K, 'Clean'): 'Down',
+             (loc_K, 'Dirty'): 'Suck',
+             (loc_L, 'Clean'): 'Down',
+             (loc_L, 'Dirty'): 'Suck',}
     return Agent(TableDrivenAgentProgram(table))
 
 
@@ -186,7 +200,17 @@ class TrivialVacuumEnvironment(Environment):
     def __init__(self):
         super().__init__()
         self.status = {loc_A: random.choice(['Clean', 'Dirty']),
-                       loc_B: random.choice(['Clean', 'Dirty'])}
+                       loc_B: random.choice(['Clean', 'Dirty']),
+                       loc_C: random.choice(['Clean', 'Dirty']),
+                       loc_D: random.choice(['Clean', 'Dirty']),
+                       loc_E: random.choice(['Clean', 'Dirty']),
+                       loc_F: random.choice(['Clean', 'Dirty']),
+                       loc_G: random.choice(['Clean', 'Dirty']),
+                       loc_H: random.choice(['Clean', 'Dirty']),
+                       loc_I: random.choice(['Clean', 'Dirty']),
+                       loc_J: random.choice(['Clean', 'Dirty']),
+                       loc_K: random.choice(['Clean', 'Dirty']),
+                       loc_L: random.choice(['Clean', 'Dirty']),}
 
     def thing_classes(self):
         return [ TableDrivenVacuumAgent]
@@ -198,26 +222,65 @@ class TrivialVacuumEnvironment(Environment):
     def execute_action(self, agent, action):
         """Change agent's location and/or location's status; track performance.
         Score 10 for each dirt cleaned; -1 for each move."""
-
-        """
-        Write your code here
-        """
+        if action == 'Right':
+            if agent.location == loc_A:
+                agent.location = loc_B
+            elif agent.location == loc_B:
+                agent.location = loc_C
+            elif agent.location == loc_F:
+                agent.location = loc_G
+            agent.performance -= 1
+        elif action == 'Left':
+            if agent.location == loc_D:
+                agent.location = loc_E
+            elif agent.location == loc_H:
+                agent.location = loc_I
+            elif agent.location == loc_I:
+                agent.location = loc_J
+            agent.performance -= 1
+        elif action == 'Up':
+            if agent.location == loc_C:
+                agent.location = loc_D
+            elif agent.location == loc_E:
+                agent.location = loc_F
+            elif agent.location == loc_G:
+                agent.location = loc_H
+            agent.performance -= 1
+        elif action == 'Down':
+            if agent.location == loc_J:
+                agent.location = loc_K
+            elif agent.location == loc_K:
+                agent.location = loc_L
+            elif agent.location == loc_L:
+                agent.location = loc_A
+            agent.performance -= 1
+        elif action == 'Suck':
+            if self.status[agent.location] == 'Dirty':
+                agent.performance += 10
+            self.status[agent.location] = 'Clean'
+            if agent.location == loc_L:
+                agent.location =loc_A
+                agent.alive=0
 
     def default_location(self, thing):
         """Agents start in either location at random."""
-        return random.choice([loc_A, loc_B])
+        return loc_A
 
 
 if __name__ == "__main__":
     agent = TableDrivenVacuumAgent()
     environment = TrivialVacuumEnvironment()
     environment.add_thing(agent)
-    print(environment.status)
+    print('\033[1m' + 'Before Action\n' + '\033[0m',environment.status)
+    print('\033[1m' + 'Agent Location\n' + '\033[0m',agent.location)
     environment.run()
-    print(agent.performance)
+    print('\033[1m' + 'After Action\n' + '\033[0m',environment.status)
+    print('\033[1m' + 'Agent Location\n' + '\033[0m',agent.location)
+    print('\033[1m' + 'Agent Performance\n' + '\033[0m',agent.performance)
 
 ## OUTPUT
+![Screenshot (5)](https://user-images.githubusercontent.com/75234807/162259913-68bb8a1e-d8b1-4f8d-a7fe-c8ba5f3d44be.png)
 
 
 ## RESULT
-
+Thus, an AI agent was developed and PEAS description is given.
