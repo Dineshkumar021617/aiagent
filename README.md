@@ -107,7 +107,6 @@ def TableDrivenVacuumAgent():
              (loc_L, 'Dirty'): 'Suck',}
     return Agent(TableDrivenAgentProgram(table))
 
-
 class Environment:
     """Abstract class representing an Environment. 'Real' Environment classes
     inherit from this. Your Environment will typically need to implement:
@@ -249,16 +248,14 @@ class TrivialVacuumEnvironment(Environment):
                 agent.location = loc_K
             elif agent.location == loc_K:
                 agent.location = loc_L
-            elif agent.location == loc_L:
-                agent.location = loc_A
-            agent.performance -= 1
+            elif agent.location == loc_L and self.status[agent.location] == 'Clean':
+                agent.location =loc_A
+                agent.alive=0
+            agent.performance -=1
         elif action == 'Suck':
             if self.status[agent.location] == 'Dirty':
                 agent.performance += 10
             self.status[agent.location] = 'Clean'
-            if agent.location == loc_L:
-                agent.location =loc_A
-                agent.alive=0
 
     def default_location(self, thing):
         """Agents start in either location at random."""
@@ -275,9 +272,10 @@ if __name__ == "__main__":
     print('\033[1m' + 'After Action\n' + '\033[0m',environment.status)
     print('\033[1m' + 'Agent Location\n' + '\033[0m',agent.location)
     print('\033[1m' + 'Agent Performance\n' + '\033[0m',agent.performance)
-
+    
 ## OUTPUT
-![Screenshot (5)](https://user-images.githubusercontent.com/75234807/162261358-be0b7f19-123b-45a1-8301-782f9e5a9935.png)
+![Screenshot (6)](https://user-images.githubusercontent.com/75234807/162720351-f3920b61-4203-4e33-a059-f9d561f0becb.png)
+
 
 ## RESULT
 Thus, an AI agent was developed and PEAS description is given.
